@@ -65,11 +65,38 @@ class IndexView(View):
                 else:
                     print(f"Code {_code} already exists in database.")
 
-        return render(request, 'index.html')
+        #stock_year_data_dict
+        #tock_quarter_data_dict
+        #print(KpiCodeList)
+        StockList = StockData.objects.values_list('code', 'name')
+        #dic = {'KpiCodeList' : KpiCodeList, 'stock_year_data_dict' : stock_year_data_dict, 'stock_quarter_data_dict' : stock_quarter_data_dict}
+        return render(request, 'index.html', {'StockList' : StockList})
 
-class ChartsView(TemplateView):
+    def post(self, request, *args, **kwargs):
+        select_code = request.POST.get('button_name')
+        StockList = StockData.objects.values_list('code', 'name')
+        stock_year_data = StockDataYear.objects.filter(code=select_code)
+        stock_quarter_data = StockDataQuarter.objects.filter(code=select_code)
+        return render(request, 'index.html', {'StockList' : StockList, 'StockDataYear' : stock_year_data, 'StockDataQuarter' : stock_quarter_data})
+    
+class ChartsView(View):
     template_name = 'charts.html'
     
+    def get(self, request, *args, **kwargs):  
+        return render(request, 'charts.html')
+    
+    def post(self, request, *args, **kwargs):
+        roe = request.POST.get('roe')
+        pbr = request.POST.get('pbr')
+
+        print(roe, pbr)
+        
+        return render(request, 'charts.html')
+    
+
+
+class TablesView(TemplateView):
+    template_name = 'tables.html'
 # def charts(request):
 #     # pass
 #     # return HttpResponse("main index")
