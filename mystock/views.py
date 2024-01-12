@@ -4,99 +4,131 @@ from mystock.models import StockDataYear, StockDataQuarter, StockData
 from django.views import View
 from django.views.generic import TemplateView
 from mystock.parsing import Kpi200_code, crawled_data_to_model_save
-import os
-import re
-import requests
+from mystock.backtest import BackTestClass
+from mystock.FinancialAnalysis import FinancialAnalysis
+import FinanceDataReader as fdr
+import dart_fss as dart
 import pandas as pd
-import sys
-import io
 
-# def index(request):
-
-#     if request.method == 'GET':
-#         existing_codes = set(StockDataYear.objects.values_list('code', flat=True))
-#         if not existing_codes:
-#             KpiCodeList = Kpi200_code()
-            
-#             for _code, _name in KpiCodeList:
-#                 if _code not in existing_codes:
-#                     stock_data_year = StockDataYear(code=_code, name=_name, period="2022", roe=None, per=None, pbr=None, debt_ratio=None, dividend_yield=None, dividend_propensity=None)
-#                     stock_data_quarter = StockDataQuarter(code=_code, name=_name, period="2022", roe=None, per=None, pbr=None, debt_ratio=None, dividend_yield=None, dividend_propensity=None)
-#                     stock_data_year.save()
-#                     stock_data_quarter.save()
-#                 else:
-#                     print(f"Code {_code} already exists in database.")
-            
-#         return render(request, 'index.html')
     
 class IndexView(View):
     
     def get(self, request, *args, **kwargs):
         
-        existing_codes = set(StockData.objects.values_list('code', flat=True))
-        if not existing_codes:
-            
-            KpiCodeList, stock_year_data_dict, stock_quarter_data_dict = crawled_data_to_model_save()
-            for _code, _name in KpiCodeList:
-                if _code not in existing_codes:
-                    stock_data = StockData(
-                        code=_code, name=_name
-                    )
-                    stock_data.save()
-                    
-                    for items in stock_year_data_dict[_code]:
-                        _year, _pbr, _roe, _per, _dividend_yield, _dividend_propensity, _debt_ratio = items
-                            
-                        stock_data_year = StockDataYear(
-                            code=_code, name=_name, year=_year, roe=_roe, per=_per, 
-                            pbr=_pbr, debt_ratio=_debt_ratio, dividend_yield=_dividend_yield, dividend_propensity=_dividend_propensity
-                        )
-                        stock_data_year.save()
-                        
-                    for items in stock_quarter_data_dict[_code]:
-                        _quarter, _pbr, _roe, _per, _dividend_yield, _dividend_propensity, _debt_ratio = items
-                    
-                        stock_data_quarter = StockDataQuarter(
-                            code=_code, name=_name, quarter=_quarter, roe=_roe, per=_per, 
-                            pbr=_pbr, debt_ratio=_debt_ratio, dividend_yield=_dividend_yield, dividend_propensity=_dividend_propensity
-                        )
-                        stock_data_quarter.save()
-
-                else:
-                    print(f"Code {_code} already exists in database.")
-
-        #stock_year_data_dict
-        #tock_quarter_data_dict
-        #print(KpiCodeList)
         StockList = StockData.objects.values_list('code', 'name')
         #dic = {'KpiCodeList' : KpiCodeList, 'stock_year_data_dict' : stock_year_data_dict, 'stock_quarter_data_dict' : stock_quarter_data_dict}
         return render(request, 'index.html', {'StockList' : StockList})
 
     def post(self, request, *args, **kwargs):
         select_code = request.POST.get('button_name')
-        StockList = StockData.objects.values_list('code', 'name')
+        stock_code_name_list = StockData.objects.values_list('code', 'name')
         stock_year_data = StockDataYear.objects.filter(code=select_code)
         stock_quarter_data = StockDataQuarter.objects.filter(code=select_code)
-        return render(request, 'index.html', {'StockList' : StockList, 'StockDataYear' : stock_year_data, 'StockDataQuarter' : stock_quarter_data})
+        stock_financial_data = StockData.objects.filter(code=select_code)
+        context = {
+            'StockList': stock_code_name_list,
+            'StockDataYear' : stock_year_data,
+            'StockDataQuarter' : stock_quarter_data,
+            'StockFinancialData' : stock_financial_data
+        }
+        return render(request, 'index.html', context)
     
 class ChartsView(View):
     template_name = 'charts.html'
     
     def get(self, request, *args, **kwargs):  
-        return render(request, 'charts.html')
+        years = range(2000, 2024)
+        months = range(1, 13)
+        context = {
+            'years': years,
+            'months' : months,
+        }
+        return render(request, 'backtestboard.html', context)
     
     def post(self, request, *args, **kwargs):
-        roe = request.POST.get('roe')
-        pbr = request.POST.get('pbr')
-
-        print(roe, pbr)
+        global select_company_names, select_company_codes
         
-        return render(request, 'charts.html')
-    
+        roe = request.POST.get('roe')
+        roa = request.POST.get('roa')
+        pbr = request.POST.get('pbr')
+        per = request.POST.get('per')
+        debt_ratio = request.POST.get('debt_ratio')
 
+        stock_data = StockData.objects.all()
+        #print(roe, pbr, per, debt_ratio, dividend_yield, dividend_propensity)
+
+        print(roe, roa, pbr, per, debt_ratio)
+        select_company_names = []
+        select_company_codes = []
+        for data in stock_data:
+            
+            # data 값이 비어있을 경우 선택하지 않음 ex) lg화학
+            if not data.roe and not data.roa and not data.pbr:
+                continue
+            
+            # roe값이 입력이 되었고 입력 roe값이 해당 종목 roe값보다 크다면 선택하지 않음
+            if roe and float(roe) > float(data.roe):
+                continue
+            
+            # roa값이 입력이 되었고 입력 roa값이 해당 종목 roa값보다 크다면 선택하지 않음
+            if roa and float(roa) > float(data.roa):
+                continue
+            
+            # pbr값이 입력이 되었고 입력 pbr값이 해당 종목 pbr값보다 작다면 선택하지 않음
+            if pbr and float(pbr) < float(data.pbr):
+                continue
+            
+            # per값이 입력이 되었고 입력 per값이 해당 종목 per값보다 작다면 선택하지 않음 
+            if per and float(per) < float(data.per):
+                continue
+            
+            if float(data.per) < 0:
+                continue
+            
+            # debt_ratio값이 입력이 되었고 입력 debt_ratio값이 해당 종목 per값보다 작다면 선택하지 않음 
+            if debt_ratio and float(debt_ratio) > (float(data.debt_ratio)):
+                continue
+            
+            select_company_names.append(data.name)
+            select_company_codes.append(data.code)
+            
+        years = range(2000, 2024)
+        months = range(1, 13)
+        context = {
+            'SelectCompany' : select_company_names,
+            'years': years,
+            'months' : months,
+        }
+        return render(request, 'backtestboard.html', context)
+    
 
 class TablesView(TemplateView):
     template_name = 'tables.html'
+    
+
+class ResultView(TemplateView):
+    template_name = 'reuslt.html'
+
+    def post(self, request, *args, **kwargs):
+        start_year = request.POST.get('start_year')
+        start_month = request.POST.get('start_month')
+        end_year = request.POST.get('end_year')  # Corrected to 'end_year'
+        end_month = request.POST.get('end_month')
+        
+        start_month = start_month if len(start_month) == 2 else '0' + start_month
+        end_month = end_month if len(end_month) == 2 else '0' + end_month
+        start_data = start_year + '-' + start_month
+        end_data = end_year + '-' + end_month
+        
+        print(select_company_codes)
+        back_test = BackTestClass(select_company_codes, start_data, end_data)
+        image_data_list = back_test.backtest()
+
+        context = {'image_datas': image_data_list}
+        print(start_data, end_data)
+        print("select_company_codes :", select_company_codes)
+        return render(request, 'result.html', context)
+    
 # def charts(request):
 #     # pass
 #     # return HttpResponse("main index")

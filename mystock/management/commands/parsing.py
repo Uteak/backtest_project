@@ -1,15 +1,9 @@
-#from django.test import TestCase
 from bs4 import BeautifulSoup
-#from .models import StockDataYear, StockDataQuarter, StockData
-import csv
-import os
 import re
 import requests
 import pandas as pd
-import sys
-import io
 import urllib.request as req
-from mystock.stock_data import FinancialData
+from stock_data import FinancialData
 import FinanceDataReader as fdr
 import math
 
@@ -105,30 +99,3 @@ def crawled_data_to_model_save():
         stock_quarter_data_dict[_code] = stock_quarter_data
     
     return stock_list, stock_year_data_dict, stock_quarter_data_dict
-
-
-# import requests
-# from bs4 import BeautifulSoup
-# import os
-# import re
-
-# def Kpi200_code():
-#     KpiCodeList = []
-#     BaseUrl = 'http://finance.naver.com/sise/entryJongmok.nhn?&page='
-
-#     for i in range(1, 21):
-#         url = BaseUrl + str(i)
-#         r = requests.get(url)
-#         #response.content.decode('euc-kr')
-#         soup = BeautifulSoup(r.content.decode('euc-kr'), 'lxml')
-#         items = soup.find_all('td', {'class': 'ctg'})
-
-#         for item in items:
-#             txt = item.a.get('href') # https://finance.naver.com/item/main.nhn?code=006390
-#             k = re.search('[\d]+', txt) ## 정규표현식 사용. [\d] 숫자표현, + : 반복
-#             if k:
-#                 code = k.group()
-#                 name = item.text
-#                 KpiCodeList.append([code, name])
-
-#     return KpiCodeList

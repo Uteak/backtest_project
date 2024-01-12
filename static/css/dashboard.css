@@ -67,3 +67,16 @@ th {
 tr:hover {
     background-color: #36b9cc;
 }
+
+#searchBar {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 80%;
+  padding: 8px;
+}
+
+.StockButton {
+  margin: 5px;
+  padding: 10px;
+  /* 추가 스타일 */
+}
