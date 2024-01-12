@@ -1,141 +1,178 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-static_root
-media_root
+absl-py==1.0.0
+aiosignal==1.2.0
+amqp==5.1.1
+appdirs==1.4.4
+arelle-release==2.21.2
+asgiref==3.7.2
+aspose-words==22.5.0
+attrs==23.2.0
+backports.zoneinfo==0.2.1
+Backtesting==0.3.3
+bayesian-optimization==1.2.0
+beautifulsoup4==4.12.2
+billiard==4.1.0
+bleach==6.1.0
+blinker==1.7.0
+bokeh==3.1.1
+cachetools==5.0.0
+cattrs==1.5.0
+celery==5.3.4
+certifi==2021.10.8
+cffi==1.16.0
+chardet==5.2.0
+charset-normalizer==3.3.2
+click==8.1.7
+click-didyoumean==0.3.0
+click-plugins==1.1.1
+click-repl==0.3.0
+cloudpickle==2.0.0
+cma==3.2.2
+colorama==0.4.5
+contourpy==1.1.1
+cryptography==41.0.5
+cycler==0.11.0
+dart-fss==0.4.7
+defusedxml==0.7.1
+dependencies==7.4.0
+Deprecated==1.2.14
+dextr==0.1.2
+distlib==0.3.7
+Django==4.1.5
+django-allauth==0.54.0
+django-bootstrap4==23.2
+django-labeller==0.3.2
+django-storages==1.14.2
+djangorestframework==3.14.0
+drf-spectacular==0.25.1
+et-xmlfile==1.1.0
+fake-useragent==1.4.0
+fastjsonschema==2.19.1
+filelock==3.13.0
+finance-datareader==0.9.66
+Flask==3.0.0
+fonttools==4.33.3
+frozendict==2.4.0
+frozenlist==1.3.0
+google-auth==2.6.6
+google-auth-oauthlib==0.4.6
+grpcio==1.43.0
+gunicorn==21.2.0
+h5py==3.6.0
+halo==0.0.31
+html5lib==1.1
+idna==3.3
+imageio==2.31.6
+importlib-metadata==7.0.1
+importlib-resources==6.1.1
+inflection==0.5.1
+isodate==0.6.1
+itsdangerous==2.1.2
+Jinja2==3.1.2
+joblib==1.1.0
+jsonschema==4.20.0
+jsonschema-specifications==2023.12.1
+jupyter_client==8.6.0
+jupyter_core==5.7.0
+jupyterlab_pygments==0.3.0
+kiwisolver==1.4.2
+kombu==5.3.2
+lazy_loader==0.3
+log-symbols==0.0.14
+lxml==5.0.1
+Markdown==3.3.6
+MarkupSafe==2.1.3
+matplotlib==3.5.2
+mistune==3.0.2
+mlagents==0.28.0
+mlagents-envs==0.28.0
+msgpack==1.0.4
+multitasking==0.0.11
+nbclient==0.9.0
+nbconvert==7.14.0
+nbformat==5.9.2
+networkx==3.1
+nevergrad==0.5.0
+numpy==1.22.3
+oauthlib==3.2.0
+openpyxl==3.1.2
+packaging==23.2
+Panda3D==1.10.11
+panda3d-gltf==0.13
+panda3d-simplepbr==0.10
+pandas==1.4.3
+pandocfilters==1.5.0
+peewee==3.17.0
+Pillow==9.1.0
+pkgutil_resolve_name==1.3.10
+platformdirs==4.1.0
+plotly==5.18.0
+polls==0.1
+prompt-toolkit==3.0.39
+protobuf==3.20.1
+psycopg2==2.9.9
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycparser==2.21
+Pygments==2.17.2
+PyJWT==2.8.0
+pyparsing==3.0.9
+pyperclip==1.8.2
+pypiwin32==223
+PyQt5==5.15.10
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.13.0
+pyrsistent==0.18.1
+python-dateutil==2.8.2
+python3-openid==3.2.0
+pytz==2023.3.post1
+PyWavelets==1.4.1
+pywin32==306
+PyYAML==6.0
+pyzmq==25.1.2
+ray==1.13.0
+referencing==0.32.1
+regex==2023.12.25
+requests==2.31.0
+requests-file==1.5.1
+requests-oauthlib==1.3.1
+rpds-py==0.16.2
+rsa==4.8
+scikit-image==0.21.0
+scikit-learn==1.1.1
+scipy==1.8.1
+screeninfo==0.8
+seaborn==0.11.2
+six==1.16.0
+soupsieve==2.5
+spinners==0.0.24
+sqlparse==0.4.4
+TA-Lib @ file:///C:/TA_Lib-0.4.24-cp38-cp38-win_amd64.whl#sha256=26d934a971a39a18e265f8b5999eb1a7d6c8fb8fca36a88881fcbb05d6138bc4
+tenacity==8.2.3
+tensorboard==2.8.0
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.1
+termcolor==2.4.0
+threadpoolctl==3.1.0
+tifffile==2023.7.10
+tinycss2==1.2.1
+torch==1.9.0+cu111
+torchaudio==0.9.0
+torchvision==0.10.0+cu111
+tornado==6.4
+tqdm==4.66.1
+traitlets==5.14.1
+typing_extensions==4.2.0
+tzdata==2023.3
+uritemplate==4.1.1
+urllib3==2.1.0
+ursina==4.1.1
+vine==5.1.0
+virtualenv==20.24.6
+wcwidth==0.2.9
+webencodings==0.5.1
+Werkzeug==3.0.1
+wrapt==1.15.0
+xmltodict==0.13.0
+xyzservices==2023.10.1
+yfinance==0.2.35
+zipp==3.17.0
