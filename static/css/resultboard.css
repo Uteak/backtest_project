@@ -1,0 +1,20 @@
+.container-fluid {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h1 {
+    color: #4a4e69;
+    margin-bottom: 15px;
+    text-align: center; 
+    margin-left: auto; 
+    margin-right: auto;
+    width: 80%; 
+}
+img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 20px;
+}

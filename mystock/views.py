@@ -1,14 +1,9 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from mystock.models import StockDataYear, StockDataQuarter, StockData
+from mystock.backtest import BackTestClass
 from django.views import View
 from django.views.generic import TemplateView
-from mystock.parsing import Kpi200_code, crawled_data_to_model_save
-from mystock.backtest import BackTestClass
-from mystock.FinancialAnalysis import FinancialAnalysis
-import FinanceDataReader as fdr
-import dart_fss as dart
-import pandas as pd
 
     
 class IndexView(View):
@@ -120,13 +115,19 @@ class ResultView(TemplateView):
         start_data = start_year + '-' + start_month
         end_data = end_year + '-' + end_month
         
-        print(select_company_codes)
-        back_test = BackTestClass(select_company_codes, start_data, end_data)
-        image_data_list = back_test.backtest()
+        back_test = BackTestClass(select_company_codes, select_company_names, start_data, end_data)
+        # 전체 누적 수익률 그래프
+        _accumulate_graph = back_test.accumulate_graph()
+        _graph_list = back_test.return_graph()
 
-        context = {'image_datas': image_data_list}
-        print(start_data, end_data)
-        print("select_company_codes :", select_company_codes)
+        return_total_graph = _graph_list[-1]
+        # 각 종목별 수익률 그래프
+        return_graph_list = _graph_list[:-1]
+        context = {
+            'accumulate_graph' : _accumulate_graph,
+            'return_total_graph' : return_total_graph,
+            'images_and_names': zip(return_graph_list, select_company_names),
+        }
         return render(request, 'result.html', context)
     
 # def charts(request):

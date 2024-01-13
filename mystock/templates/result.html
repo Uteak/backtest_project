@@ -19,7 +19,8 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/resultboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
@@ -328,7 +329,19 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
                     
-                    {% for image_data in image_datas %}
+                    {% if accumulate_graph %}
+                        <h1 class="h3 mb-4 text-gray-800">누적 수익률 그래프</h1>
+                        <img src="data:image/png;base64,{{ accumulate_graph }}" alt="Portfolio Returns">
+                    {% endif %}
+                
+                    {% if return_total_graph %}
+                        <h1 class="h3 mb-4 text-gray-800">전체 수익률 그래프</h1>
+                        <img src="data:image/png;base64,{{ return_total_graph }}" alt="Portfolio Returns">
+                    {% endif %}
+                
+                    <p></p>
+                    {% for image_data, name in images_and_names %}
+                        <h1 class="h3 mb-4 text-gray-800">{{ name }} 수익률 그래프</h1>
                         <img src="data:image/png;base64,{{ image_data }}" alt="Portfolio Returns">
                     {% endfor %}
                 </div>
