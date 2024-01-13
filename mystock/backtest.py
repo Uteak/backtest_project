@@ -251,8 +251,8 @@ class BackTestClass():
     #     return image_saves
     
     
-test = BackTestClass(['005930', '000660', '373220', '207940'], ['삼성전자', 'SK하이닉스', 'LG에너지솔루션', '삼성바이오로직스'], '2018-01', '2023-01')
-test.accumulate_graph()
-test.return_graph()
-result = test.calculate_metrics()
-print(result)
+# test = BackTestClass(['005930', '000660', '373220', '207940'], ['삼성전자', 'SK하이닉스', 'LG에너지솔루션', '삼성바이오로직스'], '2018-01', '2023-01')
+# test.accumulate_graph()
+# test.return_graph()
+# result = test.calculate_metrics()
+# print(result)

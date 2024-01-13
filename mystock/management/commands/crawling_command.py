@@ -1,4 +1,4 @@
-from mystock.parsing import crawled_data_to_model_save
+from mystock.management.commands.parsing import crawled_data_to_model_save
 from mystock.management.commands.FinancialAnalysis import FinancialAnalysis
 from mystock.models import StockDataYear, StockDataQuarter, StockData
 

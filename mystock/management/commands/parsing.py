@@ -3,7 +3,7 @@ import re
 import requests
 import pandas as pd
 import urllib.request as req
-from stock_data import FinancialData
+from mystock.management.commands.stock_data import FinancialData
 import FinanceDataReader as fdr
 import math
 
