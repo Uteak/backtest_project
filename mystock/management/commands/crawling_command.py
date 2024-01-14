@@ -10,6 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         
         self.stdout.write('크롤링을 시작합니다...')
+        self.stdout.write('약 5분정도 시간이 소요됩니다. 중간에 멈추면 안됩니다...')
         existing_codes = set(StockData.objects.values_list('code', flat=True))
         stock_list, stock_year_data_dict, stock_quarter_data_dict = crawled_data_to_model_save()
         
@@ -38,7 +39,8 @@ class Command(BaseCommand):
                 try:
                     #analysis = FinancialAnalysis(api_key, _code, _stock_count)
                     financial_data = analysis.get_financial_data()
-                    print('success :', _code, _name)
+                    msg = f"'success :' {_code}, {_name}"
+                    self.stdout.write(msg)
                     _market_cap = financial_data['market_cap']
                     _per = round(financial_data['per'], 2)
                     _pbr = round(financial_data['pbr'], 2)
@@ -52,7 +54,8 @@ class Command(BaseCommand):
                         )
                     stock_data.save()
                 except Exception as e: 
-                    print("오류 발생:", e)
+                    msg = f"'error :' {e}"
+                    self.stdout.write(msg)
                     stock_data = StockData(
                             code=_code, name=_name, stock_count = _stock_count, 
                             market_capitalization = None, per = None, pbr = None, roe = None,

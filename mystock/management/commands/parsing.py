@@ -55,7 +55,6 @@ def crawled_data_to_model_save():
     
     for _code, _name, stock_count in stock_list:
         code = _code
-        print(code)
         URL = f"https://finance.naver.com/item/main.nhn?code={code}" 
         # URL = f"https://finance.naver.com/item/main.nhn?" 
         response = requests.get(URL)
