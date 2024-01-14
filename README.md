@@ -10,7 +10,7 @@
 
 - 해당 프로젝트는 맥 or 리눅스 환경에서 'pip install -r requirements.txt' 코드 동작시 에러가 발생합니다.
 - 에러 해결 방법 : requirements.txt파일의 "TA-Lib @ file:///C:/...." 을 주석처리 한뒤 TA-Lib 라이브러리를 해당 OS환경에 맞게 설치해야합니다.
-- 또는 도커 환경에서 도커를 설치후 실행시킨뒤 아래 명령어를 입력하면 도커 컨테이너 환경에서 해당 프로젝트를 실행시킬 수 있습니다.
+- 또는 도커를 설치후 터미널을 실행시킨뒤 아래 명령어를 입력하면 도커 컨테이너 환경에서 해당 프로젝트를 실행시킬 수 있습니다.
 > docker build -f "Dockerfile" -t django/backtest_project .
 > docker-compose up
 ```
