@@ -50,9 +50,7 @@ class ChartsView(View):
         debt_ratio = request.POST.get('debt_ratio')
 
         stock_data = StockData.objects.all()
-        #print(roe, pbr, per, debt_ratio, dividend_yield, dividend_propensity)
 
-        print(roe, roa, pbr, per, debt_ratio)
         select_company_names = []
         select_company_codes = []
         for data in stock_data:
@@ -80,8 +78,8 @@ class ChartsView(View):
             if float(data.per) < 0:
                 continue
             
-            # debt_ratio값이 입력이 되었고 입력 debt_ratio값이 해당 종목 per값보다 작다면 선택하지 않음 
-            if debt_ratio and float(debt_ratio) > (float(data.debt_ratio)):
+            # debt_ratio값이 입력이 되었고 입력 debt_ratio값이 해당 종목 per값보다 크다면 선택하지 않음 
+            if debt_ratio and float(debt_ratio) < (float(data.debt_ratio)):
                 continue
             
             select_company_names.append(data.name)
@@ -105,6 +103,7 @@ class ResultView(TemplateView):
     template_name = 'reuslt.html'
 
     def post(self, request, *args, **kwargs):
+        global select_company_codes, select_company_names
         start_year = request.POST.get('start_year')
         start_month = request.POST.get('start_month')
         end_year = request.POST.get('end_year')  # Corrected to 'end_year'
@@ -115,7 +114,11 @@ class ResultView(TemplateView):
         start_data = start_year + '-' + start_month
         end_data = end_year + '-' + end_month
         
+        if start_data == end_data:
+            return render(request, '404.html')
+        
         back_test = BackTestClass(select_company_codes, select_company_names, start_data, end_data)
+        
         # 전체 누적 수익률 그래프
         _accumulate_graph = back_test.accumulate_graph()
         _graph_list = back_test.return_graph()
@@ -128,9 +131,6 @@ class ResultView(TemplateView):
             'return_total_graph' : return_total_graph,
             'images_and_names': zip(return_graph_list, select_company_names),
         }
+        
+        select_company_codes, select_company_names = [], []
         return render(request, 'result.html', context)
-    
-# def charts(request):
-#     # pass
-#     # return HttpResponse("main index")
-#     return render(request, 'charts.html')

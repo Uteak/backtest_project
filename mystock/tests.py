@@ -8,7 +8,6 @@ from io import BytesIO
 
 class MyStrategy(Strategy):
     def init(self):
-        # 데이터 타입을 float64로 변환합니다.
         close_prices = self.data.Close.astype('float64')
         self.ma = self.I(talib.SMA, close_prices, 50)
     

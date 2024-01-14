@@ -23,6 +23,13 @@
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* 박스 그림자 */
 }
 
+.StockButton.active {
+  margin: 5px;
+  padding: 10px;
+  background-color: #4e73df; /* 활성화된 버튼의 배경색 변경 */
+  color: white; /* 텍스트 색상 유지 */
+}
+
 .StockButton:hover {
   background-color: #4e73df; /* 호버 시 배경색 변경 */
   box-shadow: 4px 4px 10px rgba(0,0,0,0.3); /* 호버 시 그림자 변경 */
@@ -75,8 +82,14 @@ tr:hover {
   padding: 8px;
 }
 
-.StockButton {
+/* .StockButton {
   margin: 5px;
   padding: 10px;
-  /* 추가 스타일 */
-}
+} */
+
+/* .StockButton.active {
+  margin: 5px;
+  padding: 10px;
+  background-color: white; 
+  color: white; 
+} */
