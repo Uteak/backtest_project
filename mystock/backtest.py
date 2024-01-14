@@ -1,6 +1,8 @@
 import FinanceDataReader as fdr
 from backtesting import Backtest, Strategy
 import talib
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import pandas as pd
@@ -28,9 +30,7 @@ class BackTestClass():
         self.start_data = start + '-01'
         self.end_date = end + '-01'
     
-    def accumulate_graph(self):
-        image_saves = []
-        
+    def accumulate_graph(self):     
         company_codes = self.company_codes
         company_names = self.company_names
         start_date = self.start_data
@@ -62,6 +62,7 @@ class BackTestClass():
         plt.xlabel('Time')
         plt.ylabel('Cumulative Monthly Return')
         plt.legend()
+        plt.gca().yaxis.set_major_formatter(plt.matplotlib.ticker.PercentFormatter(1.0))
         #plt.gca().yaxis.set_major_formatter(plt.matplotlib.ticker.PercentFormatter())
         
         buffer = BytesIO()
@@ -75,29 +76,6 @@ class BackTestClass():
         image_base64 = base64.b64encode(image_png)
         image_data = image_base64.decode('utf-8')
         return image_data
-        # image_saves.append(image_data)
-
-        # # 각 종목별 그래프 그리기 및 코스피 지수 추가
-        # for ticker in tickers:
-        #     plt.figure(figsize=(12, 8))
-        #     monthly_returns[ticker].cumsum().plot(title=f'Cumulative Monthly Returns of {ticker} with KOSPI')
-        #     kospi_returns.cumsum().plot(label='KOSPI Index', style='--')
-        #     plt.xlabel('Time')
-        #     plt.ylabel('Cumulative Monthly Returns')
-        #     plt.legend()
-        #     buffer = BytesIO()
-        #     plt.savefig(buffer, format='png')
-        #     plt.close()
-        #     buffer.seek(0)
-
-        #     # Encode the image as base64
-        #     image_png = buffer.getvalue()
-        #     buffer.close()
-        #     image_base64 = base64.b64encode(image_png)
-        #     image_data = image_base64.decode('utf-8')
-        #     image_saves.append(image_data)
-        
-        # return image_saves
 
     def return_graph(self):
         image_saves = []
@@ -126,8 +104,8 @@ class BackTestClass():
         # 각 종목별 그래프 그리기
         for code, _name in zip(company_codes, company_names):
             plt.figure(figsize=(12, 8))
-            plt.plot(portfolio_returns.index, (portfolio_returns[code].cumsum()) * 100, label=_name, linewidth=2)
-            plt.title(f'Cumulative Monthly Returns of {_name}')
+            plt.plot(portfolio_returns.index, (portfolio_returns[code].cumsum()) * 100, label=code, linewidth=2)
+            plt.title(f'Cumulative Monthly Returns of code={code}')
             plt.xlabel('Time')
             plt.ylabel('Cumulative Returns (%)')
             plt.legend()
@@ -190,69 +168,3 @@ class BackTestClass():
                 })
 
         return pd.DataFrame(results)
-    # def return_graph(self):
-    #     image_saves = []
-    #     company_codes = self.company_codes
-    #     company_names = self.company_names
-        
-    #     start_date = self.start_data
-    #     end_date = self.end_date
-    #     portfolio_returns = pd.DataFrame()
-    #     for code in company_codes:
-    #         data = fdr.DataReader(code, start=start_date, end=end_date)
-    #         data = data.astype('float64')
-            
-    #         if not data.empty:
-    #             bt = Backtest(data, MyStrategy, cash=100000000, commission=.002)
-    #             results = bt.run()
-    #             equity = results._equity_curve['Equity']
-    #             # 월별 수익률 계산
-    #             monthly_returns = equity.resample('M').last().pct_change().fillna(0)
-    #             portfolio_returns[code] = monthly_returns
-    #     # 전체 포트폴리오 수익률 계산
-    #     portfolio_returns['Total'] = portfolio_returns.mean(axis=1)
-    #     # 각 종목별 그래프 그리기
-        
-    #     for code, _name in zip(company_codes, company_names):
-    #         plt.figure(figsize=(12, 8))
-    #         plt.plot(portfolio_returns.index, (portfolio_returns[code].cumsum()) * 100, label=_name)
-    #         plt.title(f'Cumulative Monthly Returns of {_name}')
-    #         plt.xlabel('Time')
-    #         plt.ylabel('Cumulative Returns (%)')
-    #         buffer = BytesIO()
-    #         plt.savefig(buffer, format='png')
-    #         plt.close()
-    #         buffer.seek(0)
-
-    #         # Encode the image as base64
-    #         image_png = buffer.getvalue()
-    #         buffer.close()
-    #         image_base64 = base64.b64encode(image_png)
-    #         image_data = image_base64.decode('utf-8')
-    #         image_saves.append(image_data)
-            
-    #     # 전체 포트폴리오 그래프 그리기
-    #     plt.figure(figsize=(12, 8))
-    #     plt.plot(portfolio_returns.index, (portfolio_returns['Total'].cumsum()) * 100, label='Total Portfolio', linewidth=1, linestyle='-')
-    #     plt.title('Cumulative Monthly Returns of Total Portfolio')
-    #     plt.xlabel('Time')
-    #     plt.ylabel('Cumulative Returns (%)')
-    #     buffer = BytesIO()
-    #     plt.savefig(buffer, format='png')
-    #     plt.close()
-    #     buffer.seek(0)
-    #     # Encode the image as base64
-    #     image_png = buffer.getvalue()
-    #     buffer.close()
-    #     image_base64 = base64.b64encode(image_png)
-    #     image_data = image_base64.decode('utf-8')
-    #     image_saves.append(image_data)
-        
-    #     return image_saves
-    
-    
-# test = BackTestClass(['005930', '000660', '373220', '207940'], ['삼성전자', 'SK하이닉스', 'LG에너지솔루션', '삼성바이오로직스'], '2018-01', '2023-01')
-# test.accumulate_graph()
-# test.return_graph()
-# result = test.calculate_metrics()
-# print(result)
